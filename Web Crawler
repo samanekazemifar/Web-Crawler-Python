@@ -1,21 +1,22 @@
+# Import necessary libraries
 import requests
 from bs4 import BeautifulSoup
 
-# Function to crawl a URL and extract links
+# Define a function to crawl a URL and extract links
 def crawl(url):
     try:
         # Send a GET request to the URL
         response = requests.get(url)
 
-        # Check if the request was successful
+        # Check if the request was successful (status code 200)
         if response.status_code == 200:
             # Parse the HTML content using BeautifulSoup
             soup = BeautifulSoup(response.content, "html.parser")
 
-            # Find all the links on the page
+            # Find all the links (anchor tags) on the page
             links = soup.find_all("a")
 
-            # Print the links
+            # Print the links found on the page
             for link in links:
                 href = link.get("href")
                 if href and not href.startswith("#"):  # Exclude anchor links
@@ -26,7 +27,7 @@ def crawl(url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Starting URL
+# Define the starting URL
 start_url = "https://example.com"
 
 # Set the maximum number of pages to crawl (optional)
@@ -35,10 +36,10 @@ max_pages = 10
 # List to keep track of visited URLs
 visited_urls = []
 
-# Queue for URLs to crawl
+# Queue for URLs to crawl, starting with the initial URL
 url_queue = [start_url]
 
-# Crawl until the queue is empty or the maximum number of pages is reached
+# Main crawling loop
 while url_queue and (max_pages is None or len(visited_urls) < max_pages):
     # Get the next URL from the queue
     current_url = url_queue.pop(0)
